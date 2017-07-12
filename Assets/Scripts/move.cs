@@ -5,9 +5,12 @@ using HedgehogTeam.EasyTouch;
 
 public class move : MonoBehaviour {
 	
+    //public
 	public GameObject player;
 	public float speed = 70;
-	private bool moving = false;
+
+    //private
+    public bool moving = false;
 	private Vector3 movePoint, hitPoint;
 
 	void Start(){
