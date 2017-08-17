@@ -9,22 +9,35 @@ using UnityEngine;
 */
 public class GameController : MonoBehaviour {
 
-	private GameObject player;
+	// PUBLIC VARIABLES
 	public GameObject[] enemies;
+
+	// PRIVATE VARIABLES
+	private GameObject player;
 	private GameObject[] enemiesOnScreen;
 	private Collider2D collider;
-	// Use this for initialization
-	void Start () {
-		player = GameObject.Find ("Picasso");
 
+
+	// Use this for initialization
+	void Awake ()
+	{
+		player = GameObject.Find ("Picasso");
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update () 
+	{
+		
 		
 	}
 
-	void GameOver(){
+	void NewEnemy()
+	{
+		Instantiate (enemies [0]);
+	}
+
+	void GameOver()
+	{
 		Debug.Log ("GAME OVER");
 	}
 }

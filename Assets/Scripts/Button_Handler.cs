@@ -3,155 +3,178 @@ using System.Collections.Generic;
 using UnityEngine;
 using HedgehogTeam.EasyTouch;
 
+// This Script does a few things:
+// 1. Assigns a target enemy, and if there is no target enemy (nullEnemy) finds an enemy to target.
+// 2. Checks what type of enemy the target enemy is
+// 3. Checks what colors the user has created, if the created colors match the enemy type the enemy dies.
 /* To Do:
- * Fix this so it works with three colored enemies and 4 and 5 and 6... This will be shitty
+ * Fix this so it works with three colored enemies and 4 and 5 and 6...
  * 
 */
 public class Button_Handler : MonoBehaviour {
 
+	// PUBLIC VARIABLES
 	public GameObject selectedTarget;
-	private string enemyType, newEnemyType;
-	private bool red = false, blue = false, yellow = false, green = false, orange = false, purple = false;
 
-	void Start(){
+
+	// PRIVATE VARIABLES
+	//private GameObject[] enemiesOnScreen;
+	private GameController gamecontroller;
+	private string enemyType, newEnemyType;
+	private int red = 0, blue = 0, yellow = 0, green = 0, orange = 0, purple = 0;
+	private GameObject nullEnemy;
+
+
+	void Awake()
+	{
+		
+		nullEnemy = GameObject.FindGameObjectWithTag ("NE");
+		selectedTarget = nullEnemy;
 		enemyType = selectedTarget.tag;
 	}
 
-	void Update(){
-		newEnemyType = selectedTarget.tag;
-		if (newEnemyType == enemyType) {
-			enemyType = selectedTarget.tag;
-		}
-		else
+
+	void Update()
+	{
+		// If the player has no target enemy and there are enemies on screen, set it to the enemy that came on screen first.
+		if (selectedTarget == nullEnemy)
 		{
-			red = false;
-			blue = false;
-			yellow = false;
-			green = false;
-			orange = false;
-			purple = false;
+			if ( > 0)
+			{
+				selectedTarget = enemiesOnScreen [0];
+			}
+		}
+		newEnemyType = selectedTarget.tag;
+		if (!(newEnemyType == enemyType))
+		{
+			red = 0;
+			blue = 0;
+			yellow = 0;
+			green = 0;
+			orange = 0;
+			purple = 0;
+			enemyType = newEnemyType;
 		}
 	}
 
-	public void AddRed(Gesture gesture){
-		red = true;
+	public void AddRed(Gesture gesture)
+	{
+		red +=1;
 		Paint_In("Red");
 
 	}
 
 	public void AddYellow(Gesture gesture){
-		yellow = true;
+		yellow +=1;
 		Paint_In("Yellow");
 
 	}
 
 	public void AddBlue(Gesture gesture){
-		blue = true;
+		blue +=1;
 		Paint_In("Blue");
 
 	}
 
 	public void AddPurple(Gesture gesture){
-		purple = true;
+		purple +=1;
 		Paint_In("Purple");
 
 	}
 
 	public void AddOrange(Gesture gesture){
-		orange = true;
+		orange +=1;
 		Paint_In("Orange");
 
 	}
 
 	public void AddGreen(Gesture gesture){
-		green = true;
+		green +=1;
 		Paint_In("Green");
 	}
-
+		
 	void Paint_In(string color){
-		Debug.Log ("I AM PAINTING IN " + color);
-		Debug.Log(enemyType.Length);
 
 		if (enemyType.Length == 1) {
 			if (enemyType == "R") {
-				if (red)
+				if (red > 0)
 					Kill ();
 			} else if (enemyType == "B") {
-				if (blue)
+				if (blue > 0)
 					Kill ();
 			} else if (enemyType == "Y") {
-				if (blue)
+				if (blue > 0)
 					Kill ();
 			}
 			else if (enemyType == "G") {
-				if (blue)
+				if (blue > 0)
 					Kill ();
 			}
 			else if (enemyType == "P") {
-				if (blue)
+				if (blue > 0)
 					Kill ();
 			}
 			else if (enemyType == "O") {
-				if (blue)
+				if (blue > 0)
 					Kill ();
 			}
 		}
 
 		//Checks enemies with 2 colors
 		else if(enemyType.Length == 2) {
-			//Checks all enemies with red
-			if (enemyType.Substring (0, 0) == "r" && red) {
-				if (enemyType == "ry" && yellow) {
+			//Checks all enemies with red > 0
+			if (enemyType.Substring (0, 0) == "r" && red> 0) {
+				if (enemyType == "ry" && yellow> 0) {
 					Kill ();
 				}
-				if (enemyType == "rb" && blue) {
+				if (enemyType == "rb" && blue > 0) {
 					Kill ();
 				}
-				if (enemyType == "ro" && orange) {
+				if (enemyType == "ro" && orange> 0) {
 					Kill ();
 				}
-				if (enemyType == "rp" && purple) {
+				if (enemyType == "rp" && purple> 0) {
 					Kill ();
 				}
-				if (enemyType == "rg" && green) {
-					Kill ();
-				}
-			}
-			if (enemyType.Substring (0, 0) == "b" && blue) {
-				if (enemyType == "by" && yellow) {
-					Kill ();
-				}
-				if (enemyType == "bg" && green) {
-					Kill ();
-				}
-				if (enemyType == "rp" && purple) {
-					Kill ();
-				}
-				if (enemyType == "ro" && orange) {
+				if (enemyType == "rg" && green> 0) {
 					Kill ();
 				}
 			}
-			if (enemyType.Substring (0, 0) == "g" && green) {
-				if (enemyType == "gy" && yellow) {
+			if (enemyType.Substring (0, 0) == "b" && blue > 0) {
+				if (enemyType == "by" && yellow> 0) {
 					Kill ();
 				}
-				if (enemyType == "gp" && purple) {
+				if (enemyType == "bg" && green> 0) {
 					Kill ();
 				}
-				if (enemyType == "go" && orange) {
+				if (enemyType == "rp" && purple> 0) {
 					Kill ();
 				}
-			}
-			if (enemyType.Substring (0, 0) == "y" && yellow) {
-				if (enemyType == "yp" && purple) {
-					Kill ();
-				}
-				if (enemyType == "yo" && orange) {
+				if (enemyType == "ro" && orange> 0) {
 					Kill ();
 				}
 			}
-			if (enemyType.Substring (0, 0) == "p" && purple) {
-				if (enemyType == "po" && orange) {
+			if (enemyType.Substring (0, 0) == "g" && green> 0) {
+				if (enemyType == "gy" && yellow> 0) {
+					Kill ();
+				}
+				if (enemyType == "gp" && purple> 0) {
+					Kill ();
+				}
+				if (enemyType == "go" && orange> 0) {
+					Kill ();
+				}
+			}
+			if (enemyType.Substring (0, 0) == "y" && yellow> 0) {
+				if (enemyType == "yp" && purple> 0) {
+					Kill ();
+				}
+				if (enemyType == "yo" && orange> 0) {
+					Kill ();
+				}
+			}
+			if (enemyType.Substring (0, 0) == "p" && purple> 0) {
+				if (enemyType == "po" && orange> 0) {
 					Kill ();
 				}
 			}
@@ -161,7 +184,14 @@ public class Button_Handler : MonoBehaviour {
 
 	}
 
+	void MixColors()
+	{
+		//Transform posStart = gesture.startPosition;
+		//Transform posEnd = gesture.position;
+
+	}
 	void Kill(){
 		Destroy(selectedTarget.gameObject);
+		Camera.main.SendMessage ("NewEnemy");
 	}
 }
