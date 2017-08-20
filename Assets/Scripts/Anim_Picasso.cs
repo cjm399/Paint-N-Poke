@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
-using UnityEditor.Animations;
 
 /*
  * This script will handle the animations for the Picasso Player
@@ -15,24 +13,19 @@ public class Anim_Picasso : MonoBehaviour
 
     //Private Variables
     private Animator anim;
-    private int walkHash = Animator.StringToHash("Walk");
-    private bool moving;
     private GameObject mainCam;
     private move move;
     void Start()
     {
-        anim = GetComponent<Animator>();
+        anim = this.GetComponent<Animator>();
         mainCam = GameObject.Find("Main Camera");
         move = mainCam.GetComponent<move>();
-
-        moving = move.moving;
     }
 
     // Update is called once per frame
     void Update()
     {
-        moving = move.moving;
-        if (moving)
+		if (move.moving)
         {
             anim.SetInteger("State", 0);
         }

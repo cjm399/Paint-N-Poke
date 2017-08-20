@@ -10,11 +10,13 @@ public class move : MonoBehaviour {
 	public float speed = 70;
 
     //private
-    public bool moving = false;
+	public bool moving;
 	private Vector3 movePoint, hitPoint;
 
 	void Start(){
+		moving = false;
 		player = GameObject.Find ("Picasso");
+		movePoint = player.transform.position;
 	}
 
 	void OnEnable(){

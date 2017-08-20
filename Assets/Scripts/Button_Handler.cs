@@ -199,6 +199,7 @@ public class Button_Handler : MonoBehaviour {
 
 	void MixColors()
 	{
+		
 		//Transform posStart = gesture.startPosition;
 		//Transform posEnd = gesture.position;
 
