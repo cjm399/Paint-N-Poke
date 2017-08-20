@@ -22,7 +22,7 @@ public class Button_Handler : MonoBehaviour {
 	private GameController gamecontroller;
 	private string enemyType, newEnemyType;
 	private int red = 0, blue = 0, yellow = 0, green = 0, orange = 0, purple = 0;
-	private GameObject nullEnemy;
+	private GameObject nullEnemy, enAliveObj, player;
 
 
 	void Awake()
@@ -31,19 +31,17 @@ public class Button_Handler : MonoBehaviour {
 		nullEnemy = GameObject.FindGameObjectWithTag ("NE");
 		selectedTarget = nullEnemy;
 		enemyType = selectedTarget.tag;
+		player = GameObject.Find ("Picasso");
+	}
+
+	void Start()
+	{
+		enAliveObj = GameObject.Find ("EnemiesAlive");
 	}
 
 
-	void Update()
+	void newEnemy()
 	{
-		// If the player has no target enemy and there are enemies on screen, set it to the enemy that came on screen first.
-		if (selectedTarget == nullEnemy)
-		{
-			if ( > 0)
-			{
-				selectedTarget = enemiesOnScreen [0];
-			}
-		}
 		newEnemyType = selectedTarget.tag;
 		if (!(newEnemyType == enemyType))
 		{
@@ -57,14 +55,29 @@ public class Button_Handler : MonoBehaviour {
 		}
 	}
 
+
+	void Update()
+	{
+		// If the player has no target enemy and there are enemies on screen, set it to the enemy that came on screen first.
+		if (selectedTarget == nullEnemy)
+		{
+			if ( enAliveObj.transform.childCount > 0)
+			{
+				selectedTarget = enAliveObj.transform.GetChild(0).gameObject;
+				newEnemy ();
+			}
+		}
+		
+	}
+
 	public void AddRed(Gesture gesture)
 	{
 		red +=1;
 		Paint_In("Red");
-
 	}
 
-	public void AddYellow(Gesture gesture){
+	public void AddYellow(Gesture gesture)
+	{
 		yellow +=1;
 		Paint_In("Yellow");
 
@@ -191,7 +204,9 @@ public class Button_Handler : MonoBehaviour {
 
 	}
 	void Kill(){
+		Debug.Log ("I AM KILLING");
 		Destroy(selectedTarget.gameObject);
+		selectedTarget = nullEnemy;
 		Camera.main.SendMessage ("NewEnemy");
 	}
 }

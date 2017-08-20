@@ -14,13 +14,14 @@ public class GameController : MonoBehaviour {
 
 	// PRIVATE VARIABLES
 	private GameObject player;
-	private GameObject[] enemiesOnScreen;
+	private GameObject enAliveObj;
 	private Collider2D collider;
 
 
 	// Use this for initialization
 	void Awake ()
 	{
+		enAliveObj = GameObject.Find ("EnemiesAlive");
 		player = GameObject.Find ("Picasso");
 	}
 	
@@ -33,7 +34,7 @@ public class GameController : MonoBehaviour {
 
 	void NewEnemy()
 	{
-		Instantiate (enemies [0]);
+		Instantiate (enemies [0], enAliveObj.transform);
 	}
 
 	void GameOver()

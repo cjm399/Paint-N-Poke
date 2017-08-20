@@ -33,11 +33,24 @@ public class move : MonoBehaviour {
 		hitPoint = new Vector3(gesture.position.x, gesture.position.y, 1f);
 		movePoint = this.GetComponent<Camera> ().ScreenToWorldPoint (hitPoint);
 
-		if (movePoint.y > 71f) {
-			movePoint.y = 71f;
-		}
+		Debug.Log (movePoint.y + " Y POS");
+		Debug.Log (movePoint.x + " X POS");
 
-		moving = true;
+		// Did they click a button? If so, do not move.
+
+		if (movePoint.y < -190f)
+		{
+			moving = false;
+		}
+		else 
+		{
+			if (movePoint.y > 71f)
+			{
+				movePoint.y = 71f;
+			}
+
+			moving = true;
+		}
 	}
 
 	void Update(){
